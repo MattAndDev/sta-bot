@@ -14,4 +14,5 @@ crate-docker-image:
     - docker build -t $DEPLOYMENT_IMAGE .
     - docker push $DEPLOYMENT_IMAGE
     - docker rmi $DEPLOYMENT_IMAGE
-
+  tags:
+    - docker
