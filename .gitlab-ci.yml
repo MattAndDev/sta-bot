@@ -2,7 +2,6 @@ variables:
   DEPLOYMENT_IMAGE: mattanddev/sta-bot:latest
 
 stages:
-  - pack
   - deploy
 
 before_script:
@@ -21,9 +20,12 @@ crate-docker-image:
     - docker
 
 deploy-to-k8s:
-  image: lachlanevenson/k8s-kubectl:latest
+  image: alpine
   stage: deploy
   script:
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+    - sudo mv ./kubectl /usr/local/bin/kubectl
     - |
       cat >.kubeconfig <<EOL
       apiVersion: v1
