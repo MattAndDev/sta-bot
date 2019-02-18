@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sta-bot
+spec:
+  selector:
+    matchLabels:
+      app: sta-bot
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sta-bot
+    spec:
+      containers:
+      - name: api-badge-dog
+        image: mattanddev/api.badge.dog
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3100

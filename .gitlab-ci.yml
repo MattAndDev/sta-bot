@@ -3,6 +3,7 @@ variables:
 
 stages:
   - pack
+  - deploy
 
 before_script:
   - docker login -u $DOCKERHUB_USER -p "$DOCKERHUB_PASSWORD" $DOCKERHUB_REGISTRY
@@ -18,3 +19,29 @@ crate-docker-image:
     - docker rmi $DEPLOYMENT_IMAGE
   tags:
     - docker
+
+deploy-to-k8s:
+  image: lachlanevenson/k8s-kubectl:latest
+  stage: deploy
+  script:
+    - |
+      cat >.kubeconfig <<EOL
+      apiVersion: v1
+      kind: Config
+      clusters:
+      - name: do-fra1-milano
+        cluster:
+          certificate-authority-data: $K8S_CERTIFICATE
+          server: https://67262157-5095-4e0a-9897-085d2c6c3a18.k8s.ondigitalocean.com
+      contexts:
+      - name: do-fra1-milano
+        context:
+          cluster: do-fra1-milano
+          user: gitlab-ci
+      current-context: do-fra1-milano
+      users:
+      - name: gitlab-ci
+        user:
+          token: $K8S_TOKEN
+      EOL
+    - kubectl -f k8s
