@@ -8,6 +8,7 @@ before_script:
   - docker login -u $DOCKERHUB_USER -p "$DOCKERHUB_PASSWORD" $DOCKERHUB_REGISTRY
 
 crate-docker-image:
+  image: docker:latest
   stage: pack
   script:
     - docker build -t $DEPLOYMENT_IMAGE .
