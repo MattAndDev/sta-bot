@@ -8,6 +8,7 @@ before_script:
   - docker login -u $DOCKERHUB_USER --password-stdin "$DOCKERHUB_PASSWORD" $DOCKERHUB_REGISTRY
 
 crate-docker-image:
+  image: docker:latest
   services:
     - docker:dind
   stage: pack
