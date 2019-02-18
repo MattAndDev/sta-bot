@@ -1,0 +1,16 @@
+variables:
+  DEPLOYMENT_IMAGE: mattanddev/sta-bot:latest
+
+stages:
+  - pack
+
+before_script:
+  - docker login -u $DOCKERHUB_USER -p "$DOCKERHUB_PASSWORD" $DOCKERHUB_REGISTRY
+
+crate-docker-image:
+  stage: pack
+  script:
+    - docker build -t $DEPLOYMENT_IMAGE .
+    - docker push $DEPLOYMENT_IMAGE
+    - docker rmi $DEPLOYMENT_IMAGE
+
