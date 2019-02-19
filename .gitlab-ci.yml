@@ -13,4 +13,24 @@ deploy-to-k8s:
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
-    - kubectl apply -f k8s
+    - |
+      cat >.kubeconfig <<EOL
+      apiVersion: v1
+      kind: Config
+      clusters:
+      - name: do-fra1-milano
+        cluster:
+          certificate-authority-data: $K8S_CERTIFICATE
+          server: https://67262157-5095-4e0a-9897-085d2c6c3a18.k8s.ondigitalocean.com
+      contexts:
+      - name: do-fra1-milano
+        context:
+          cluster: do-fra1-milano
+          user: gitlab-ci
+      current-context: do-fra1-milano
+      users:
+      - name: gitlab-ci
+        user:
+          token: $K8S_TOKEN
+      EOL
+    - kubectl --kubeconfig=.kubeconfig apply -f k8s
