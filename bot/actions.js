@@ -54,7 +54,7 @@ const getPostInfo = async (page, posts) => {
     const likesHtml = (likes) ? await page.evaluate(e => (e.querySelector('span')) ? e.querySelector('span').innerHTML : '1', likes) : '0'
     p.post.likes = parseInt(likesHtml.replace(',', ''), 10)
     const title = await page.$('h2')
-    const userProfile = await page.evaluate(e => (e.querySelector('a')) ? e.querySelector('a').href : undefined, title)
+    const userProfile = await page.evaluate(e => (e && e.querySelector('a')) ? e.querySelector('a').href : undefined, title)
     p.user.url = userProfile
     await page.goto(userProfile)
     const [_, name] = userProfile.split('/').reverse()
