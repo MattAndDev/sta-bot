@@ -33,4 +33,4 @@ deploy-to-k8s:
         user:
           token: $K8S_TOKEN
       EOL
-    - kubectl -f k8s
+    - kubectl apply -f k8s
