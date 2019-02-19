@@ -17,6 +17,7 @@ const login = async (page, usr, pwd) => {
   const awaitLogin = page.waitForNavigation({ waitUntil: 'networkidle0' })
   await page.click('button[type="submit"]')
   await awaitLogin
+  console.log(page.url());
   return true
 }
 
