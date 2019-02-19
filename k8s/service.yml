@@ -4,8 +4,8 @@ metadata:
   name: sta-bot
 spec:
   ports:
-  - port: 3000
-    targetPort: 80
+  - port: 80
+    targetPort: 3000
   selector:
     app: sta-bot
 
