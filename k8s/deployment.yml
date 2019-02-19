@@ -21,4 +21,4 @@ spec:
       - name: sta-bot
         image: mattanddev/sta-bot:latest
         ports:
-        - containerPort: 3100
+        - containerPort: 3000
