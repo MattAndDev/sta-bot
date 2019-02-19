@@ -2,8 +2,23 @@ variables:
   DEPLOYMENT_IMAGE: mattanddev/sta-bot:latest
 
 stages:
+  - pack
   - deploy
 
+
+crate-docker-image:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: pack
+  before_script:
+    - docker login -u $DOCKERHUB_USER -p "$DOCKERHUB_PASSWORD" $DOCKERHUB_REGISTRY
+  script:
+    - docker build -t $DEPLOYMENT_IMAGE .
+    - docker push $DEPLOYMENT_IMAGE
+    - docker rmi $DEPLOYMENT_IMAGE
+  tags:
+    - docker
 
 deploy-to-k8s:
   image: alpine
