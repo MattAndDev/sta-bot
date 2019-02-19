@@ -7,14 +7,18 @@ spec:
     matchLabels:
       app: sta-bot
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: sta-bot
     spec:
       containers:
-      - name: api-badge-dog
-        image: mattanddev/api.badge.dog
-        imagePullPolicy: Always
+      - name: sta-bot
+        image: mattanddev/sta-bot:latest
         ports:
         - containerPort: 3100
